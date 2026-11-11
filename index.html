@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCBlast - Solusi WhatsApp Blast & Marketing Otomatis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            purple: '#7c3aed',
+                            purpleLight: '#8b5cf6',
+                            green: '#25D366',
+                            greenDark: '#128C7E',
+                            dark: '#0b0f19',
+                            card: '#131b2e',
+                            border: '#1f293d'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        .glow-purple {
+            box-shadow: 0 0 50px -12px rgba(124, 58, 237, 0.35);
+        }
+        .glow-green {
+            box-shadow: 0 0 50px -12px rgba(37, 211, 102, 0.35);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #25D366 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-gray-100 antialiased selection:bg-brand-purple selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-brand-card border border-brand-green/40 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-full bg-brand-green/20 text-brand-green flex items-center justify-center">
+            <i class="fas fa-check text-sm"></i>
+        </div>
+        <span id="toast-message" class="text-sm font-medium">Teks berhasil disalin!</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-brand-dark/80 border-b border-brand-border/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-green p-0.5 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-brand-dark rounded-[10px] flex items-center justify-center">
+                        <i class="fab fa-whatsapp text-brand-green text-xl"></i>
+                    </div>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight">RC<span class="text-brand-green">BLAST</span><span class="text-xs font-semibold px-1.5 py-0.5 bg-brand-purple/20 text-brand-purpleLight rounded border border-brand-purple/30 ml-2">.COM</span></span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-300">
+                <a href="#fitur" class="hover:text-brand-green transition-colors">Fitur Utama</a>
+                <a href="#generator" class="hover:text-brand-green transition-colors flex items-center space-x-1">
+                    <span>Quick Generator</span>
+                    <span class="px-1.5 py-0.5 text-[10px] bg-brand-green/20 text-brand-green rounded-full font-semibold">Gratis</span>
+                </a>
+                <a href="#cara-kerja" class="hover:text-brand-green transition-colors">Cara Kerja</a>
+                <a href="#harga" class="hover:text-brand-green transition-colors">Harga Paket</a>
+            </nav>
+
+            <!-- Action CTA -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="#generator" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-purpleLight hover:opacity-90 text-white font-semibold text-sm shadow-lg hover:shadow-brand-purple/25 transition-all transform hover:-translate-y-0.5">
+                    Coba Gratis Now
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" class="md:hidden text-gray-300 hover:text-white focus:outline-none p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card/95 backdrop-blur-xl border-b border-brand-border px-4 pt-3 pb-6 space-y-3">
+            <a href="#fitur" class="block py-2 text-gray-300 hover:text-brand-green font-medium">Fitur Utama</a>
+            <a href="#generator" class="block py-2 text-gray-300 hover:text-brand-green font-medium">Quick Generator (Gratis)</a>
+            <a href="#cara-kerja" class="block py-2 text-gray-300 hover:text-brand-green font-medium">Cara Kerja</a>
+            <a href="#harga" class="block py-2 text-gray-300 hover:text-brand-green font-medium">Harga Paket</a>
+            <div class="pt-2">
+                <a href="#generator" class="block text-center w-full py-3 rounded-xl bg-gradient-to-r from-brand-purple to-brand-purpleLight text-white font-semibold text-sm">
+                    Coba Gratis Now
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-12 pb-20 md:pt-24 md:pb-32 overflow-hidden">
+        <!-- Ambient background glows -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-purple/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute top-1/3 right-10 w-[300px] h-[300px] bg-brand-green/15 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-card border border-brand-border text-xs font-semibold text-brand-green mb-6 shadow-inner">
+                    <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+                    <span>Platform WhatsApp Marketing #1 Indonesia</span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight sm:leading-tight mb-6">
+                    Kirim Ribuan Pesan WhatsApp <br class="hidden sm:inline">
+                    <span class="gradient-text">Otomatis & Tanpa Blokir</span>
+                </h1>
+                
+                <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+                    Tingkatkan konversi penjualan bisnis Anda dengan **RCBlast**. Jangkau ribuan pelanggan secara instan, pesan personalisasi otomatis, laporan terkirim real-time, & hemat waktu 90%.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+                    <a href="#generator" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-green hover:bg-brand-greenDark text-gray-900 font-bold text-base shadow-lg shadow-brand-green/20 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>Mulai Blast Gratis</span>
+                    </a>
+                    <a href="#cara-kerja" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-card hover:bg-brand-border border border-brand-border text-gray-200 font-semibold text-base transition-all flex items-center justify-center space-x-2">
+                        <i class="fas fa-play text-xs text-brand-purple"></i>
+                        <span>Pelajari Caranya</span>
+                    </a>
+                </div>
+
+                <!-- Stats counter -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 p-6 rounded-2xl bg-brand-card/50 border border-brand-border backdrop-blur-md">
+                    <div class="p-2">
+                        <div class="text-3xl font-extrabold text-white">10M+</div>
+                        <div class="text-xs text-gray-400 mt-1">Pesan Terkirim</div>
+                    </div>
+                    <div class="p-2">
+                        <div class="text-3xl font-extrabold text-brand-green">99.4%</div>
+                        <div class="text-xs text-gray-400 mt-1">Delivery Rate</div>
+                    </div>
+                    <div class="p-2">
+                        <div class="text-3xl font-extrabold text-white">5,200+</div>
+                        <div class="text-xs text-gray-400 mt-1">Bisnis & UMKM</div>
+                    </div>
+                    <div class="p-2">
+                        <div class="text-3xl font-extrabold text-brand-purpleLight">24/7</div>
+                        <div class="text-xs text-gray-400 mt-1">Bot Responder</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Generator Tool (Instant WhatsApp Blast Link) -->
+    <section id="generator" class="py-16 bg-gradient-to-b from-brand-dark to-brand-card/50 border-y border-brand-border/60">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-brand-green font-bold text-xs uppercase tracking-widest">Fitur Demo Instant</span>
+                <h2 class="text-3xl font-bold mt-2">WhatsApp Blast & Message Link Generator</h2>
+                <p class="text-gray-400 text-sm mt-2">Uji coba format pesan blast dan kirim pesan langsung via browser tanpa install aplikasi tambahan.</p>
+            </div>
+
+            <div class="bg-brand-card border border-brand-border rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Form Input -->
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-400 mb-2">Nomor Tujuan WhatsApp (Gunakan Kode Negara 62)</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-500">
+                                    <i class="fas fa-phone-alt text-sm"></i>
+                                </div>
+                                <input type="text" id="target-phone" placeholder="Contoh: 6281234567890" class="w-full pl-10 pr-4 py-3 bg-brand-dark border border-brand-border rounded-xl focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none text-sm text-white placeholder-gray-600 font-mono">
+                            </div>
+                            <span class="text-[11px] text-gray-500 mt-1 block">*Nomor tidak perlu dipisah tanda kurung atau spasi.</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-400 mb-2">Isi Pesan Promosi / Blast</label>
+                            <textarea id="target-message" rows="5" placeholder="Halo [Nama], dapatkan promo spesial potongan 50% untuk produk kami hari ini! Klik link berikut..." class="w-full p-3 bg-brand-dark border border-brand-border rounded-xl focus:border-brand-green focus:ring-1 focus:ring-brand-green outline-none text-sm text-white placeholder-gray-600"></textarea>
+                        </div>
+
+                        <!-- Template Buttons -->
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-gray-400 mb-2">Pilih Draf Pesan Cepat:</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="setTemplate('promo')" class="px-3 py-1.5 bg-brand-dark border border-brand-border hover:border-brand-purple text-xs rounded-lg text-gray-300">🔥 Promo Diskon</button>
+                                <button onclick="setTemplate('reminder')" class="px-3 py-1.5 bg-brand-dark border border-brand-border hover:border-brand-purple text-xs rounded-lg text-gray-300">⏰ Pengingat Tagihan</button>
+                                <button onclick="setTemplate('greeting')" class="px-3 py-1.5 bg-brand-dark border border-brand-border hover:border-brand-purple text-xs rounded-lg text-gray-300">👋 Menyapa Pelanggan</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output & Action -->
+                    <div class="bg-brand-dark/80 border border-brand-border rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs font-bold text-brand-purpleLight uppercase tracking-wider">Preview Pesan</span>
+                                <span class="text-[11px] text-gray-500" id="char-count">0 Karakter</span>
+                            </div>
+
+                            <div class="bg-[#075E54]/20 border border-[#128C7E]/30 rounded-xl p-4 min-h-[140px] text-sm text-gray-200 whitespace-pre-wrap font-sans relative" id="preview-box">
+                                <span class="text-gray-500 italic">Pratinjau pesan WhatsApp Anda akan muncul di sini...</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 mt-6">
+                            <button onclick="sendDirectWA()" class="w-full py-3.5 bg-brand-green hover:bg-brand-greenDark text-gray-950 font-bold rounded-xl shadow-lg transition-all flex items-center justify-center space-x-2">
+                                <i class="fab fa-whatsapp text-xl"></i>
+                                <span>Kirim via WhatsApp Direct</span>
+                            </button>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="copyLink()" class="py-2.5 bg-brand-card hover:bg-brand-border border border-brand-border text-gray-300 font-semibold rounded-xl text-xs flex items-center justify-center space-x-2">
+                                    <i class="fas fa-link text-brand-purple"></i>
+                                    <span>Salin Link WA</span>
+                                </button>
+                                <button onclick="copyText()" class="py-2.5 bg-brand-card hover:bg-brand-border border border-brand-border text-gray-300 font-semibold rounded-xl text-xs flex items-center justify-center space-x-2">
+                                    <i class="fas fa-copy text-brand-purple"></i>
+                                    <span>Salin Teks Pesan</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="fitur" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-xs font-bold text-brand-purpleLight uppercase tracking-widest mb-2">Fitur Unggulan</h2>
+            <p class="text-3xl sm:text-4xl font-extrabold">Segala yang Anda Butuhkan Untuk Menguasai WhatsApp Marketing</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Feature 1 -->
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl hover:border-brand-purple/50 transition-all hover:-translate-y-1">
+                <div class="w-12 h-12 bg-brand-purple/10 border border-brand-purple/30 rounded-xl flex items-center justify-center text-brand-purpleLight text-xl mb-5">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Mass WA Blast</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Kirim ribuan pesan promosi otomatis ke kontak pelanggan dalam hitungan detik tanpa simpan nomor manual.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl hover:border-brand-green/50 transition-all hover:-translate-y-1">
+                <div class="w-12 h-12 bg-brand-green/10 border border-brand-green/30 rounded-xl flex items-center justify-center text-brand-green text-xl mb-5">
+                    <i class="fas fa-user-tag"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Personalize Text</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Sebut nama pelanggan, nomor pesanan, atau data khusus secara otomatis pada setiap pesan blast.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl hover:border-brand-purple/50 transition-all hover:-translate-y-1">
+                <div class="w-12 h-12 bg-brand-purple/10 border border-brand-purple/30 rounded-xl flex items-center justify-center text-brand-purpleLight text-xl mb-5">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Auto Responder 24/7</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Balas pesan masuk dari calon pembeli secara cepat dan otomatis dengan sistem chatbot cerdas.</p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="bg-brand-card border border-brand-border p-6 rounded-2xl hover:border-brand-green/50 transition-all hover:-translate-y-1">
+                <div class="w-12 h-12 bg-brand-green/10 border border-brand-green/30 rounded-xl flex items-center justify-center text-brand-green text-xl mb-5">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">Laporan Analitik</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Pantau grafik status pengiriman pesan (Pending, Terkirim, Gagal) secara transparan dan akurat.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="cara-kerja" class="py-20 bg-brand-card/30 border-y border-brand-border/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs font-bold text-brand-green uppercase tracking-widest mb-2">Mudah & Cepat</h2>
+                <p class="text-3xl font-extrabold">3 Langkah Mudah Memulai Blast Pesan</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                <!-- Step 1 -->
+                <div class="bg-brand-card border border-brand-border p-8 rounded-2xl relative text-center">
+                    <div class="w-12 h-12 bg-brand-purple rounded-full flex items-center justify-center font-black text-white text-lg mx-auto mb-6 shadow-lg">1</div>
+                    <h3 class="text-xl font-bold mb-3">Upload Kontak</h3>
+                    <p class="text-gray-400 text-sm">Unggah berkas database kontak pelanggan Anda dalam format Excel atau CSV dengan mudah.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="bg-brand-card border border-brand-border p-8 rounded-2xl relative text-center">
+                    <div class="w-12 h-12 bg-brand-purple rounded-full flex items-center justify-center font-black text-white text-lg mx-auto mb-6 shadow-lg">2</div>
+                    <h3 class="text-xl font-bold mb-3">Tulis & Desain Pesan</h3>
+                    <p class="text-gray-400 text-sm">Buat kata-kata promosi menarik, sisipkan gambar, tag nama, dan link penawaran Anda.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="bg-brand-card border border-brand-border p-8 rounded-2xl relative text-center">
+                    <div class="w-12 h-12 bg-brand-green text-gray-950 rounded-full flex items-center justify-center font-black text-lg mx-auto mb-6 shadow-lg">3</div>
+                    <h3 class="text-xl font-bold mb-3">Kirim & Terima Orderan</h3>
+                    <p class="text-gray-400 text-sm">Klik kirim, sistem RCBlast akan memproses pengiriman otomatis ke seluruh kontak sasaran.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="harga" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="text-xs font-bold text-brand-purpleLight uppercase tracking-widest mb-2">Pilihan Paket</h2>
+            <p class="text-3xl sm:text-4xl font-extrabold">Investasi Terbaik Untuk Pertumbuhan Bisnis</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Starter Plan -->
+            <div class="bg-brand-card border border-brand-border rounded-3xl p-8 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">Starter</h3>
+                    <p class="text-gray-400 text-xs mb-6">Cocok untuk pemula & UMKM lokal.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-black text-white">Rp 150.000</span>
+                        <span class="text-gray-400 text-xs"> / bulan</span>
+                    </div>
+
+                    <ul class="space-y-3.5 text-sm text-gray-300 border-t border-brand-border pt-6 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>5.000 Kredit Pesan / bln</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Import File Excel / CSV</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Fitur Personalize Name</span>
+                        </li>
+                        <li class="flex items-center space-x-3 text-gray-500">
+                            <i class="fas fa-times text-xs"></i>
+                            <span class="line-through">Auto Responder Bot</span>
+                        </li>
+                    </ul>
+                </div>
+                <a href="https://wa.me/6281234567890?text=Halo%20RCBlast,%20saya%20tertarik%20paket%20Starter" target="_blank" class="w-full py-3 bg-brand-dark border border-brand-border hover:border-brand-purple text-center rounded-xl font-bold text-sm text-gray-200 transition-colors">
+                    Pilih Paket Starter
+                </a>
+            </div>
+
+            <!-- Pro Plan (Featured) -->
+            <div class="bg-brand-card border-2 border-brand-purple rounded-3xl p-8 flex flex-col justify-between relative shadow-2xl glow-purple">
+                <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-purple text-white text-[11px] font-bold px-4 py-1 rounded-full uppercase tracking-wider">
+                    Paling Populer
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-2">Pro Business</h3>
+                    <p class="text-gray-400 text-xs mb-6">Untuk bisnis berkembang & Online Shop.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-black text-white">Rp 350.000</span>
+                        <span class="text-gray-400 text-xs"> / bulan</span>
+                    </div>
+
+                    <ul class="space-y-3.5 text-sm text-gray-300 border-t border-brand-border pt-6 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>25.000 Kredit Pesan / bln</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Import File Excel / CSV</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Fitur Personalize Name</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Auto Responder & Keyword Bot</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Laporan Analytics Lengkap</span>
+                        </li>
+                    </ul>
+                </div>
+                <a href="https://wa.me/6281234567890?text=Halo%20RCBlast,%20saya%20tertarik%20paket%20Pro%20Business" target="_blank" class="w-full py-3.5 bg-brand-purple hover:bg-brand-purpleLight text-center rounded-xl font-bold text-sm text-white shadow-lg transition-colors">
+                    Pilih Paket Pro
+                </a>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="bg-brand-card border border-brand-border rounded-3xl p-8 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">Enterprise</h3>
+                    <p class="text-gray-400 text-xs mb-6">Kebutuhan skala besar & integrasi API.</p>
+                    <div class="mb-6">
+                        <span class="text-4xl font-black text-white">Custom</span>
+                    </div>
+
+                    <ul class="space-y-3.5 text-sm text-gray-300 border-t border-brand-border pt-6 mb-8">
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Unlimited Kuota Pesan</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Akses WhatsApp API Dedicated</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Custom Chatbot Flow</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i class="fas fa-check text-brand-green text-xs"></i>
+                            <span>Dedicated Account Manager</span>
+                        </li>
+                    </ul>
+                </div>
+                <a href="https://wa.me/6281234567890?text=Halo%20RCBlast,%20saya%20ingin%20konsultasi%20paket%20Enterprise" target="_blank" class="w-full py-3 bg-brand-dark border border-brand-border hover:border-brand-purple text-center rounded-xl font-bold text-sm text-gray-200 transition-colors">
+                    Hubungi Sales
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark border-t border-brand-border/60 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-purple to-brand-green p-0.5 flex items-center justify-center">
+                        <div class="w-full h-full bg-brand-dark rounded-[6px] flex items-center justify-center">
+                            <i class="fab fa-whatsapp text-brand-green text-sm"></i>
+                        </div>
+                    </div>
+                    <span class="text-lg font-bold tracking-tight">RC<span class="text-brand-green">BLAST</span>.COM</span>
+                </div>
+
+                <div class="flex space-x-6 text-sm text-gray-400">
+                    <a href="#fitur" class="hover:text-white transition-colors">Fitur</a>
+                    <a href="#generator" class="hover:text-white transition-colors">Generator</a>
+                    <a href="#harga" class="hover:text-white transition-colors">Harga</a>
+                    <a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a>
+                </div>
+
+                <div class="text-xs text-gray-500">
+                    © 2026 <a href="https://rcblast.com" class="hover:underline text-gray-400">RCBlast.com</a>. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // WhatsApp Generator Functionality
+        const phoneInput = document.getElementById('target-phone');
+        const messageInput = document.getElementById('target-message');
+        const previewBox = document.getElementById('preview-box');
+        const charCount = document.getElementById('char-count');
+
+        function updatePreview() {
+            const msg = messageInput.value.trim();
+            if (msg) {
+                previewBox.innerText = msg;
+                previewBox.classList.remove('text-gray-500', 'italic');
+            } else {
+                previewBox.innerHTML = '<span class="text-gray-500 italic">Pratinjau pesan WhatsApp Anda akan muncul di sini...</span>';
+            }
+            charCount.innerText = `${msg.length} Karakter`;
+        }
+
+        messageInput.addEventListener('input', updatePreview);
+
+        function setTemplate(type) {
+            if (type === 'promo') {
+                messageInput.value = "Halo Kak! 👋\n\nPromo Spesial Gajian di RCBlast kembali lagi! Dapatkan Diskon 50% untuk pembelian paket Pro hari ini.\n\nGunakan kode: PROMO50\nOrder sekarang: https://rcblast.com";
+            } else if (type === 'reminder') {
+                messageInput.value = "Halo Kak,\n\nSekadar mengingatkan bahwa tagihan pemesanan Anda #INV-1092 akan jatuh tempo esok hari. Mohon konfirmasi jika sudah melakukan pembayaran ya.\n\nTerima kasih!";
+            } else if (type === 'greeting') {
+                messageInput.value = "Halo Kak, terima kasih sudah berkunjung ke toko kami! 😊\nAda yang bisa kami bantu mengenai produk pilihan Anda?";
+            }
+            updatePreview();
+        }
+
+        function getFormattedPhone() {
+            let phone = phoneInput.value.trim().replace(/[^0-9]/g, '');
+            if (phone.startsWith('0')) {
+                phone = '62' + phone.slice(1);
+            }
+            return phone;
+        }
+
+        function generateWALink() {
+            const phone = getFormattedPhone();
+            const msg = encodeURIComponent(messageInput.value.trim());
+            
+            if (phone) {
+                return `https://wa.me/${phone}?text=${msg}`;
+            } else {
+                return `https://wa.me/?text=${msg}`;
+            }
+        }
+
+        function sendDirectWA() {
+            const link = generateWALink();
+            window.open(link, '_blank');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 3000);
+        }
+
+        function copyLink() {
+            const link = generateWALink();
+            const tempInput = document.createElement('input');
+            tempInput.value = link;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Link WhatsApp berhasil disalin!');
+        }
+
+        function copyText() {
+            const text = messageInput.value;
+            if (!text) {
+                showToast('Ketik pesan terlebih dahulu!');
+                return;
+            }
+            const tempInput = document.createElement('textarea');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Teks pesan berhasil disalin!');
+        }
+    </script>
+</body>
+</html>
